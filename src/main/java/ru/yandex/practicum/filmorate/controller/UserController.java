@@ -3,8 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.exception.user.UserAlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.user.UserDoNotExistException;
+import ru.yandex.practicum.filmorate.exception.UserDoNotExistException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -19,7 +18,7 @@ public class UserController {
     private Map<Integer, User> users = new HashMap<>();
 
     @PostMapping("/users")
-    public User addUser(@RequestBody User user) throws UserAlreadyExistException, ValidationException {
+    public User addUser(@RequestBody User user) throws ValidationException {
         if (!checkValidity(user)) {
             throw new ValidationException("Некорректные данные пользователя");
         }
