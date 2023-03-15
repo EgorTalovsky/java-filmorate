@@ -13,9 +13,12 @@ import java.util.*;
 @Slf4j
 @Component
 public class FilmController {
+    private final FilmService filmService;
 
     @Autowired
-    private FilmService filmService;
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @PostMapping("/films")
     public Film addFilm(@RequestBody Film film) {
@@ -36,21 +39,21 @@ public class FilmController {
     }
 
     @GetMapping("/films/{id}")
-    public Film getFilmById(@PathVariable int id) {
+    public Film getFilmById(@PathVariable long id) {
         log.debug("Запрос на получение данных конкретного фильма {}", id);
         return filmService.getFilmById(id);
     }
 
     @PutMapping("/films/{id}/like/{userId}")
-    public Film likeFilm(@PathVariable int id,
-                         @PathVariable int userId) {
+    public Film likeFilm(@PathVariable long id,
+                         @PathVariable long userId) {
         log.debug("Запрос на лайк пользователем {} фильма {}", userId, id);
         return filmService.likeFilm(id, userId);
     }
 
     @DeleteMapping("/films/{id}/like/{userId}")
-    public Film deleteLike(@PathVariable int id,
-                           @PathVariable int userId) {
+    public Film deleteLike(@PathVariable long id,
+                           @PathVariable long userId) {
         log.debug("Запрос на удаление лайка пользователя {} фильма {}", userId, id);
         return filmService.deleteLike(id, userId);
     }

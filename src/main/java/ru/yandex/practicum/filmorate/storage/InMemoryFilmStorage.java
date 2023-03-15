@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
-    private Map<Integer, Film> films = new HashMap<>();
+    private final Map<Long, Film> films = new HashMap<>();
     private final static LocalDate FIRST_FILM_DATE = LocalDate.of(1895, 12, 28);
 
     public Film addFilm(Film film) throws ValidationException {
@@ -48,7 +48,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return new ArrayList<>(films.values());
     }
 
-    public Film getFilmById(int id) {
+    public Film getFilmById(long id) {
         if (films.containsKey(id)) {
             log.debug("Фильм {} найден", id);
             return films.get(id);
