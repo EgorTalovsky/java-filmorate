@@ -39,6 +39,8 @@ public class InMemoryUserService implements UserService {
         return userStorage.getUserById(id);
     }
 
+    //public void sendFriendRequest(long id, long friendId)
+
     public void addFriend(long id, long friendId) {
         if (id == friendId) {
             log.info("Некорректный запрос - нельзя добавить в друзья самого себя");

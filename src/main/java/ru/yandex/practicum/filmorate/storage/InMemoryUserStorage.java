@@ -22,8 +22,8 @@ public class InMemoryUserStorage implements UserStorage {
             log.info("Некорректные данные пользователя");
             throw new ValidationException("Некорректные данные пользователя");
         }
-        user.setId(users.size() + 1);
-        users.put(user.getId(), user);
+        user.setUserId(users.size() + 1);
+        users.put(user.getUserId(), user);
         log.debug("Пользователь добавлен!");
         return user;
     }
@@ -33,8 +33,8 @@ public class InMemoryUserStorage implements UserStorage {
             log.info("Некорректные данные пользователя для обновления");
             throw new ValidationException("Некорректные данные пользователя для обновления");
         }
-        if (users.containsKey(user.getId())) {
-            users.put(user.getId(), user);
+        if (users.containsKey(user.getUserId())) {
+            users.put(user.getUserId(), user);
             log.debug("Данные пользователя обновлены!");
         } else {
             log.info("Пользователь не найден");

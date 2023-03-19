@@ -23,8 +23,8 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.info("Валидация не пройдена");
             throw new ValidationException("Фильм не может быть добавлен в фильмотеку");
         }
-        film.setId(films.size() + 1);
-        films.put(film.getId(), film);
+        film.setFilmId(films.size() + 1);
+        films.put(film.getFilmId(), film);
         log.debug("Фильм добавлен!");
         return film;
     }
@@ -34,8 +34,8 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.info("Валидация не пройдена");
             throw new ValidationException("Фильм не может быть обновлен");
         }
-        if (films.containsKey(film.getId())) {
-            films.put(film.getId(), film);
+        if (films.containsKey(film.getFilmId())) {
+            films.put(film.getFilmId(), film);
             log.debug("Данные фильма обновлены!");
         } else {
             log.info("Фильм не найден");
