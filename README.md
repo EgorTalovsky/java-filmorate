@@ -1,4 +1,4 @@
 # java-filmorate
 Template repository for Filmorate project.
 
-![ER-diagramme](https://app.quickdatabasediagrams.com/#/d/SOGQ0J)
+![ER-diagram](https://github.com/EgorTalovsky/java-filmorate/blob/main/QuickDBD-Filmorate%20ER%20v%201.0.png)
