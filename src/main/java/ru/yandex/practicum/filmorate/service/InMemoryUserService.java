@@ -79,15 +79,15 @@ public class InMemoryUserService implements UserService {
 
     public List<User> getFriendsOfUserId(long id) {
         String sql = "SELECT * " +
-                     "FROM \"user\" " +
-                     "WHERE \"user_id\" IN " +
-                        "(SELECT \"friend_id\" " +
-                        "FROM \"friends_users\" " +
-                        "WHERE \"user_id\" = ?);";
-        return jdbcTemplate.query(sql,this::makeFriends, id);
+                "FROM \"user\" " +
+                "WHERE \"user_id\" IN " +
+                "(SELECT \"friend_id\" " +
+                "FROM \"friends_users\" " +
+                "WHERE \"user_id\" = ?);";
+        return jdbcTemplate.query(sql, this::makeFriends, id);
     }
 
-    public Set<User> getCommonFriends (long id, long otherId) {
+    public Set<User> getCommonFriends(long id, long otherId) {
         if (id == otherId) {
             log.info("Некорректный запрос - нельзя найти общих друзей у самого себя");
             throw new ValidationException("Некорректный запрос - нельзя найти общих друзей у самого себя");
