@@ -4,11 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.storage.impl.InMemoryFilmDbStorage;
-import ru.yandex.practicum.filmorate.storage.impl.InMemoryUserDbStorage;
-import ru.yandex.practicum.filmorate.storage.impl.MpaDbStorage;
 
 import java.util.Map;
 
