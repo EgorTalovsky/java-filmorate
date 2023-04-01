@@ -1,33 +1,33 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
-import ru.yandex.practicum.filmorate.model.enums.Friendship;
+
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 @Data
 public class User {
-    private long userId;
-    private final String email;
+    private long id;
+    private String login;
     private String name;
-    private final String login;
-    private final LocalDate birthday;
-    private Set<Long> friends = new HashSet<>();
-    private Map<Long, Friendship> incomingRequests = new HashMap<>();
-    private Map<Long, Friendship> outgoingRequests = new HashMap<>();
+    private String email;
+    private LocalDate birthday;
 
-    public User(String email, String login, String name, LocalDate birthday) {
-        this.email = email;
+    public User() {
+    }
+
+    public User( String name, String login, String email, LocalDate birthday) {
         this.login = login;
         this.name = name;
+        this.email = email;
         this.birthday = birthday;
     }
 
-    public void addFriend(Long friendId) {
-        getFriends().add(friendId);
+    public User(long id, String login, String name, String email, LocalDate birthday) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.email = email;
+        this.birthday = birthday;
     }
 }

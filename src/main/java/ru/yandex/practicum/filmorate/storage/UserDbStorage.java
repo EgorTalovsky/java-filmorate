@@ -2,9 +2,12 @@ package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
-public interface UserStorage {
+public interface UserDbStorage {
 
     User addUser(User user);
 
@@ -12,8 +15,10 @@ public interface UserStorage {
 
     List<User> getUsers();
 
-    User getUserById(long id);
+    Optional<User> getUserById(long id);
 
     boolean checkValidity(User user);
+
+    User makeUser(ResultSet rs, int rowNum) throws SQLException;
 
 }

@@ -2,67 +2,75 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class InMemoryFilmService implements FilmService {
-    FilmStorage filmStorage;
-    UserStorage userStorage;
+    FilmDbStorage filmDbStorage;
+    UserDbStorage userStorage;
+    JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public InMemoryFilmService(FilmStorage filmStorage, UserStorage userStorage) {
-        this.filmStorage = filmStorage;
+    public InMemoryFilmService(FilmDbStorage filmDbStorage, UserDbStorage userStorage, JdbcTemplate jdbcTemplate) {
+        this.filmDbStorage = filmDbStorage;
         this.userStorage = userStorage;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Film addFilm(Film film) {
-        return filmStorage.addFilm(film);
+        return filmDbStorage.addFilm(film);
     }
 
     public Film updateFilm(Film film) {
-        return filmStorage.updateFilm(film);
+        return filmDbStorage.updateFilm(film);
     }
 
     public List<Film> getFilms() {
-        return filmStorage.getFilms();
+        return filmDbStorage.getFilms();
     }
 
-    public Film getFilmById(long id) {
-        return filmStorage.getFilmById(id);
+    public Optional<Film> getFilmById(long id) {
+        return filmDbStorage.getFilmById(id);
     }
 
-    public Film likeFilm(long id, long userId) {
-        User user = userStorage.getUserById(userId);
-        Film film = filmStorage.getFilmById(id);
+    public Film likeFilm(long filmId, long userId) {
+        User user = userStorage.getUserById(userId).get();
+        Film film = filmDbStorage.getFilmById(filmId).get();
         film.getLikes().add(user);
-        log.debug("Лайк поставлен!");
+        String sql = "INSERT INTO \"film_like\" (\"film_id\", \"user_id\") VALUES (?, ?)";
+        jdbcTemplate.update(sql, filmId, userId);
+        log.debug("Лайк фильму {} от пользователя {} поставлен!", filmId, userId);
         return film;
     }
 
-    public Film deleteLike(long id, long userId) {
-        User user = userStorage.getUserById(userId);
-        Film film = filmStorage.getFilmById(id);
+    public Film deleteLike(long filmId, long userId) {
+        User user = userStorage.getUserById(userId).get();
+        Film film = filmDbStorage.getFilmById(filmId).get();
         boolean likeFound = film.getLikes().contains(user);
         if (!likeFound) {
-            log.info("Пользователь {} не ставил лайк фильму {}", userId, id);
+            log.info("Пользователь {} не ставил лайк фильму {}", userId, filmId);
             throw new ValidationException("Лайк пользователя " + userId + " отсутствует");
         }
+        String sql = "DELETE \"film_like\" WHERE \"film_id\" = ? AND \"user_id\" = ?";
+        jdbcTemplate.update(sql, filmId, userId);
         film.getLikes().remove(user);
         log.debug("Лайк удален!");
         return film;
     }
 
     public List<Film> getMostLikedFilms(Integer count) {
-        return filmStorage.getFilms().stream()
+        return filmDbStorage.getFilms().stream()
                 .sorted(this::compare)
                 .limit(count)
                 .collect(Collectors.toList());
@@ -71,5 +79,4 @@ public class InMemoryFilmService implements FilmService {
     private int compare(Film f0, Film f1) {
         return f1.getLikes().size() - f0.getLikes().size();
     }
-
 }
