@@ -17,7 +17,7 @@ import java.util.*;
 @Component
 @Slf4j
 public class InMemoryFilmDbStorage implements FilmDbStorage {
-    private final static LocalDate FIRST_FILM_DATE = LocalDate.of(1895, 12, 28);
+    private static final LocalDate FIRST_FILM_DATE = LocalDate.of(1895, 12, 28);
     private long nextId = 1;
     private final JdbcTemplate jdbcTemplate;
     private final MpaDbStorage mpaDbStorage;
