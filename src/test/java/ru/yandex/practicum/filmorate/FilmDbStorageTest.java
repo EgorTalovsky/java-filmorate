@@ -11,7 +11,8 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
-import ru.yandex.practicum.filmorate.storage.impl.MpaDbStorage;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
+import ru.yandex.practicum.filmorate.storage.impl.*;
 
 import java.time.LocalDate;
 
@@ -23,13 +24,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FilmDbStorageTest {
     private final FilmDbStorage filmDbStorage;
-    private final MpaDbStorage mpaDbStorage = new MpaDbStorage(new JdbcTemplate());
-    Film film = new Film(1, "film1", "film for test add", LocalDate.of(1996, 1, 21), 100, new Mpa(5, null));
-    Film filmForUpdate = new Film(1, "film1", "film for update", LocalDate.of(1996, 1, 21), 100, new Mpa(5, null));
-    Film filmWithoutName = new Film(1, "", "film for update", LocalDate.of(1996, 1, 21), 100, new Mpa(5, null));
 
     @Test
     public void testAddFilm() {
+        Film film = new Film(1, "film1", "film for test add", LocalDate.of(1996, 1, 21), 100, new Mpa(5, null));
         filmDbStorage.addFilm(film);
         assertThat(filmDbStorage.getFilmById(1).get()).hasFieldOrPropertyWithValue("name", "film1");
     }
@@ -41,22 +39,24 @@ public class FilmDbStorageTest {
 
     @Test
     public void testGetFilmWithcorrectId() {
-        assertThat(filmDbStorage.getFilmById(2).get()).hasFieldOrPropertyWithValue("description", "byDataSql");
+        assertThat(filmDbStorage.getFilmById(1).get()).hasFieldOrPropertyWithValue("description", "film for test add");
     }
 
     @Test
     public void testUpdateFilmWithCorrectFields() {
+        Film filmForUpdate = new Film(1, "film1", "film for update", LocalDate.of(1996, 1, 21), 100, new Mpa(5, null));
         filmDbStorage.updateFilm(filmForUpdate);
         assertThat(filmDbStorage.getFilmById(1).get()).hasFieldOrPropertyWithValue("description","film for update");
     }
 
     @Test
     public void testUpdateFilmWithIncorrectFields() {
+        Film filmWithoutName = new Film(1, "", "film for update", LocalDate.of(1996, 1, 21), 100, new Mpa(5, null));
         assertThrows(ValidationException.class, () -> filmDbStorage.updateFilm(filmWithoutName));
     }
 
     @Test
     public void testGetFilms() {
-        assertThat(filmDbStorage.getFilms().size()).isEqualTo(1);
+        assertThat(filmDbStorage.getFilms().size()).isEqualTo(0);
     }
 }

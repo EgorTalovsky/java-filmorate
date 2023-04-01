@@ -5,10 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
 import ru.yandex.practicum.filmorate.storage.UserDbStorage;
+import ru.yandex.practicum.filmorate.storage.impl.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -21,22 +24,22 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UserDbStorageTests {
     private final UserDbStorage userStorage;
-    User user = new User(1, "user1", "for test Add", "user1@ya.ru", LocalDate.of(1996, 1, 21));
-    User userForCorrectUpdate = new User(1, "user1", "Update", "user1@ya.ru", LocalDate.of(1996, 1, 21));
-    User userForIncorrectUpdate = new User(1, "user1", "IncorrectUpdate", "user1@ya.ru", LocalDate.of(2025, 1, 21));
 
     @Test
     public void testAddUser() {
+        User user = new User(1, "user1", "for test Add", "user1@ya.ru", LocalDate.of(1996, 1, 21));
         userStorage.addUser(user);
         assertThat(userStorage.getUserById(1).get()).hasFieldOrPropertyWithValue("login", "user1");
     }
 
     @Test
     public void testGetUserByCorrectId() {
-        Optional<User> userOptional = userStorage.getUserById(2);
+        User userForTestGet = new User(1, "user1", "for test Get", "user1@ya.ru", LocalDate.of(1996, 1, 21));
+        userStorage.addUser(userForTestGet);
+        Optional<User> userOptional = userStorage.getUserById(1);
         assertThat(userOptional)
                 .isPresent()
-                .hasValueSatisfying(user -> assertThat(user).hasFieldOrPropertyWithValue("id", 2L));
+                .hasValueSatisfying(user -> assertThat(user).hasFieldOrPropertyWithValue("id", 1L));
     }
 
     @Test
@@ -46,6 +49,7 @@ class UserDbStorageTests {
 
     @Test
     public void testUpdateUserWithCorrectFields() {
+        User userForCorrectUpdate = new User(1, "user1", "Update", "user1@ya.ru", LocalDate.of(1996, 1, 21));
         userStorage.updateUser(userForCorrectUpdate);
         assertThat(userStorage.getUserById(1).get())
                 .hasFieldOrPropertyWithValue("name", "Update");
@@ -53,6 +57,7 @@ class UserDbStorageTests {
 
     @Test
     public void testUpdateUserWithIncorrectFields() {
+        User userForIncorrectUpdate = new User(1, "user1", "IncorrectUpdate", "user1@ya.ru", LocalDate.of(2025, 1, 21));
         assertThrows(ValidationException.class, () -> userStorage.updateUser(userForIncorrectUpdate));
     }
 

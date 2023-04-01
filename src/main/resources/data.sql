@@ -38,8 +38,8 @@ INSERT  INTO "genre" ("genre_id", "genre_name")
 VALUES ('6', 'Боевик');
 
 /*INSERT INTO "user" ("user_id", "name", "login", "email", "birthday")
-VALUES ('2', 'user2', 'forTestGetting', 'user2@yandex.ru', '1954-08-22');
+VALUES ('101', 'user2', 'forTestGetting', 'user2@yandex.ru', '1954-08-22');
 
 INSERT INTO "film" ("film_id", "name", "description" , "release_date", "duration", "age_rate_id")
-VALUES	('2', 'film2', 'byDataSql', '1995-12-16', '90', '1');*/
+VALUES	('101', 'film2', 'byDataSql', '1995-12-16', '90', '1');*/
 
