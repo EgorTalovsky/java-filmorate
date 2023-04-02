@@ -18,7 +18,7 @@ public class FilmExtractor implements ResultSetExtractor<List<Film>> {
     private final GenreDbStorage genreDbStorage;
     private final UserDbStorage userDbStorage;
 
-    public FilmExtractor( MpaDbStorage mpaDbStorage, GenreDbStorage genreDbStorage, UserDbStorage userDbStorage) {
+    public FilmExtractor(MpaDbStorage mpaDbStorage, GenreDbStorage genreDbStorage, UserDbStorage userDbStorage) {
         this.mpaDbStorage = mpaDbStorage;
         this.genreDbStorage = genreDbStorage;
         this.userDbStorage = userDbStorage;
