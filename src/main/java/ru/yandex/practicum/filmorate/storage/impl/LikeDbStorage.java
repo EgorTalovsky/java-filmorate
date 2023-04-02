@@ -2,14 +2,14 @@ package ru.yandex.practicum.filmorate.storage.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
+@Repository
 public class LikeDbStorage {
     private UserDbStorage userDbStorage;
     @Autowired

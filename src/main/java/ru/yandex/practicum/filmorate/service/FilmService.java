@@ -14,7 +14,7 @@ public interface FilmService {
 
     Optional<Film> getFilmById(long id);
 
-    Film likeFilm(long id, long userId);
+    Film likeFilm(long id, long userId) throws Throwable;
 
     Film deleteLike(long id, long userId);
 

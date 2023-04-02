@@ -46,7 +46,7 @@ public class FilmController {
 
     @PutMapping("/films/{id}/like/{userId}")
     public Film likeFilm(@PathVariable long id,
-                         @PathVariable long userId) {
+                         @PathVariable long userId) throws Throwable {
         log.debug("Запрос на лайк пользователем {} фильма {}", userId, id);
         return filmService.likeFilm(id, userId);
     }

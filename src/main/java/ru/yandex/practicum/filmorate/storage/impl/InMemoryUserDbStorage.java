@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-@Component
+@Repository
 @Slf4j
 public class InMemoryUserDbStorage implements UserDbStorage {
     private final JdbcTemplate jdbcTemplate;

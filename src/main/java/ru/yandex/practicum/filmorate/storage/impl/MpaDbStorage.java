@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.MpaNotFoundException;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class MpaDbStorage {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
@@ -34,10 +34,9 @@ public class MpaDbStorage {
         } catch (EmptyResultDataAccessException e) {
             throw new MpaNotFoundException("Рейтинг с id " + id + " не найден");
         }
-
     }
 
-    private Optional<Mpa> makeMpa(ResultSet rs, int rowNum) throws SQLException {
+    public Optional<Mpa> makeMpa(ResultSet rs, int rowNum) throws SQLException {
         return Optional.of(new Mpa(
                 rs.getInt("age_rate_id"),
                 rs.getString("rate_name")

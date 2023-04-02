@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.GenreNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
 public class GenreDbStorage {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
@@ -42,15 +42,15 @@ public class GenreDbStorage {
             for (Genre genre : film.getGenres()) {
                 genreWithName.add(getGenreById(genre.getId()).orElse(new Genre(0, "жанр не найден")));
             }
-            return genreWithName
-                    .stream().sorted(this::compare)
+            return genreWithName.stream()
+                    .sorted(this::compare)
                     .collect(Collectors.toCollection(LinkedHashSet::new));
         } catch (EmptyResultDataAccessException e) {
             throw new GenreNotFoundException("Жанр фильма " + film.getId() + "не найден");
         }
     }
 
-    private int compare(Genre g0, Genre g1) {
+    public int compare(Genre g0, Genre g1) {
         return g0.getId() - g1.getId();
     }
 

@@ -49,7 +49,7 @@ public class FilmDbStorageTest {
     @Test
     public void testUpdateFilmWithIncorrectFields() {
         Film filmWithoutName = new Film(1, "", "film for update", LocalDate.of(1996, 1, 21), 100, new Mpa(5, null));
-        assertThrows(ValidationException.class, () -> filmDbStorage.updateFilm(filmWithoutName));
+        assertThrows(FilmNotFoundException.class, () -> filmDbStorage.updateFilm(filmWithoutName));
     }
 
     @Test

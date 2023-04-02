@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -12,6 +13,7 @@ import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,9 +46,9 @@ public class InMemoryFilmService implements FilmService {
         return filmDbStorage.getFilmById(id);
     }
 
-    public Film likeFilm(long filmId, long userId) {
+    public Film likeFilm(long filmId, long userId) throws Throwable {
         User user = userStorage.getUserById(userId).get();
-        Film film = filmDbStorage.getFilmById(filmId).get();
+        Film film = filmDbStorage.getFilmById(filmId).orElseThrow((Supplier<Throwable>) () -> new FilmNotFoundException("Film nit found"));
         film.getLikes().add(user);
         String sql = "INSERT INTO \"film_like\" (\"film_id\", \"user_id\") VALUES (?, ?)";
         jdbcTemplate.update(sql, filmId, userId);

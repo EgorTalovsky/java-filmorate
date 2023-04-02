@@ -27,7 +27,8 @@ class FilmorateApplicationTests {
     GenreDbStorage genreDbStorage = new GenreDbStorage(jdbcTemplate);
     UserDbStorage userStorage = new InMemoryUserDbStorage(jdbcTemplate);
     LikeDbStorage likeDbStorage = new LikeDbStorage(userStorage, jdbcTemplate);
-    FilmDbStorage filmDbStorage = new InMemoryFilmDbStorage(jdbcTemplate, mpaDbStorage, genreDbStorage, likeDbStorage);
+    FilmDbStorage filmDbStorage = new InMemoryFilmDbStorage(jdbcTemplate, mpaDbStorage, genreDbStorage,
+            new FilmExtractor(mpaDbStorage, genreDbStorage, userStorage));
 
     @Test
     public void checkValidityWithCorrectFilm() {
