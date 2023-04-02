@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable long id) {
+    public Optional<User> getUserById(@PathVariable long id) {
         log.debug("Запрос на получение данных конкретного пользователя {}", id);
         return userService.getUserById(id);
     }
@@ -55,20 +55,20 @@ public class UserController {
 
     @DeleteMapping("/users/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable long id,
-                          @PathVariable long friendId) {
+                             @PathVariable long friendId) {
         log.debug("Запрос на удаление из друзей пользователей {} и {}", id, friendId);
         userService.deleteFriend(id, friendId);
     }
 
-    @GetMapping ("/users/{id}/friends")
+    @GetMapping("/users/{id}/friends")
     public List<User> getFriendsOfUserId(@PathVariable long id) {
         log.debug("Запрос на список друзей пользователя {}", id);
         return userService.getFriendsOfUserId(id);
     }
 
-    @GetMapping ("/users/{id}/friends/common/{otherId}")
-    public Set<User> getCommonFriends (@PathVariable long id,
-                                          @PathVariable long otherId) {
+    @GetMapping("/users/{id}/friends/common/{otherId}")
+    public Set<User> getCommonFriends(@PathVariable long id,
+                                      @PathVariable long otherId) {
         log.debug("Запрос на список общих друзей пользователей {} и {}", id, otherId);
         return userService.getCommonFriends(id, otherId);
     }

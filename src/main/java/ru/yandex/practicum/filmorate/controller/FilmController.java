@@ -39,14 +39,14 @@ public class FilmController {
     }
 
     @GetMapping("/films/{id}")
-    public Film getFilmById(@PathVariable long id) {
+    public Optional<Film> getFilmById(@PathVariable long id) {
         log.debug("Запрос на получение данных конкретного фильма {}", id);
         return filmService.getFilmById(id);
     }
 
     @PutMapping("/films/{id}/like/{userId}")
     public Film likeFilm(@PathVariable long id,
-                         @PathVariable long userId) {
+                         @PathVariable long userId) throws Throwable {
         log.debug("Запрос на лайк пользователем {} фильма {}", userId, id);
         return filmService.likeFilm(id, userId);
     }

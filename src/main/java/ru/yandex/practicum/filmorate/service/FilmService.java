@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FilmService {
     Film addFilm(Film film);
@@ -11,9 +12,9 @@ public interface FilmService {
 
     List<Film> getFilms();
 
-    Film getFilmById(long id);
+    Optional<Film> getFilmById(long id);
 
-    Film likeFilm(long id, long userId);
+    Film likeFilm(long id, long userId) throws Throwable;
 
     Film deleteLike(long id, long userId);
 
